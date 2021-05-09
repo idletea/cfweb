@@ -86,7 +86,7 @@ for (const spec of [
         const ev = makeFetchEvent(spec.method, `https://example.com${spec.path}`);
         const handler = await ROUTER.getHandler(ev);
         const response = await handler();
-        assert.equal(response.headers.get("x-tag"), spec.tag);
+        assert.equal(response.headers.get("x-handler"), spec.tag);
     })
 };
 
@@ -99,7 +99,7 @@ for (const spec of [
         const ev = makeFetchEvent("GET", spec.path);
         const handler = await ROUTER.getHandler(ev);
         const response = await handler();
-        assert.equal(response.headers.get("x-tag"), spec.tag);
+        assert.equal(response.headers.get("x-handler"), spec.tag);
     });
 };
 
@@ -131,7 +131,7 @@ test("should get implicit options handler for routes", async () => {
 test("should get explicit options handler for routes", async () => {
     const ev = makeFetchEvent("OPTIONS", "http://example.com/options/");
     const response = await (await ROUTER.getHandler(ev))();
-    assert.equal(response.headers.get("x-tag"), "/options/");
+    assert.equal(response.headers.get("x-handler"), "/options/");
 });
 
 test("should not see HEAD twice in allow for explict HEAD handler", async () => {
@@ -143,5 +143,5 @@ test("should not see HEAD twice in allow for explict HEAD handler", async () => 
 test("should route the first match in the routing table", async () => {
     const ev = makeFetchEvent("PUT", "http://example.com/doubled/");
     const response = await (await ROUTER.getHandler(ev))();
-    assert.equal(response.headers.get("x-tag"), "/doubled1");
+    assert.equal(response.headers.get("x-handler"), "/doubled1");
 });
