@@ -1,4 +1,5 @@
 import {Router, Route} from "./router";
+export * from "./router";
 
 export type AppInit = {
     routes: Route[],
@@ -9,7 +10,7 @@ function respondFromOrigin(ev: FetchEvent): Promise<Response> {
 }
 
 export class App {
-    private router: Router
+    private router: Router;
 
     constructor(init: AppInit) {
         this.router = new Router(init.routes);

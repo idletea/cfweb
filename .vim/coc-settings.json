@@ -1,0 +1,9 @@
+{
+    "deno": {
+        "enable": false,
+        "lint": true
+    },
+    "tsserver": {
+        "enable": true
+    }
+}
