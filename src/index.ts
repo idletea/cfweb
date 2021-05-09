@@ -32,7 +32,7 @@ export class App {
             }
         } catch (error) {
             if (this.error_handler !== null) {
-                return this.error_handler(ev, error);
+                return await this.error_handler(ev, error);
             } else {
                 throw error;
             }
