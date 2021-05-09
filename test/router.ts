@@ -2,28 +2,7 @@ import {strict as assert} from "assert";
 
 import {Router} from "../src/router";
 
-// ceate mock fetch event
-const makeFetchEvent =
-    (method: string, url: string) => new FetchEvent("fetch", {
-        request: new Request(url, {
-            method: method,
-        }),
-    });
-// create handler with a tag to identify if it was used to generate a response
-const makeTaggedHandler =
-    (tag: string) =>
-        (_ev: FetchEvent, _match: RegExpExecArray) => new Response(null, {
-            headers: new Headers({"x-tag": tag}),
-        });
-// create handler which asserts the expected regex matches are present
-const makeGroupAssertHandler =
-    (tag: string, expecteds: ({name: string, value: string})[]) =>
-        (ev: FetchEvent, match: RegExpExecArray) => {
-            for (const expected of expecteds) {
-                assert.equal(match.groups[expected.name], expected.value);
-            }
-            return makeTaggedHandler(tag)(ev, match);
-        };
+import {makeTaggedHandler, makeGroupAssertHandler, makeFetchEvent} from "./_helpers";
 
 const ROUTER = new Router([
     {

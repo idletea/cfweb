@@ -3,7 +3,11 @@ export * from "./router";
 
 export type AppInit = {
     routes: Route[],
+    error_handler?: ErrorHandler,
 }
+
+export type ErrorHandler =
+    (ev: FetchEvent, exc: any) => Promise<Response> | Response;
 
 function respondFromOrigin(ev: FetchEvent): Promise<Response> {
     return fetch(ev.request);
@@ -11,17 +15,28 @@ function respondFromOrigin(ev: FetchEvent): Promise<Response> {
 
 export class App {
     private router: Router;
+    private error_handler: ErrorHandler | null;
 
     constructor(init: AppInit) {
         this.router = new Router(init.routes);
+        this.error_handler = init.error_handler ?? null;
     }
 
     async handle(ev: FetchEvent): Promise<Response> {
         const handler = this.router.getHandler(ev);
-        if (handler !== null) {
-            return (await handler)();
-        } else {
-            return respondFromOrigin(ev);
+        try {
+            if (handler !== null) {
+                return (await handler)();
+            } else {
+                return respondFromOrigin(ev);
+            }
+        } catch (error) {
+            if (this.error_handler !== null) {
+                return this.error_handler(ev, error);
+            } else {
+                throw error;
+            }
         }
+
     }
 }

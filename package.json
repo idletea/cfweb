@@ -1,6 +1,6 @@
 {
     "name": "@oefd/cfweb",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": "Terry Kerr <terry@oefd.net>",
     "license": "MIT",
     "description": "Basic web framework for Cloudflare Workers",
