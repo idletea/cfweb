@@ -23,16 +23,16 @@ export class App {
     }
 
     async handle(ev: FetchEvent): Promise<Response> {
-        const handler = this.router.getHandler(ev);
+        const handler = await this.router.getHandler(ev);
         try {
             if (handler !== null) {
-                return (await handler)();
+                return await handler();
             } else {
-                return respondFromOrigin(ev);
+                return await respondFromOrigin(ev);
             }
         } catch (error) {
             if (this.error_handler !== null) {
-                return this.error_handler(ev, error);
+                return await this.error_handler(ev, error);
             } else {
                 throw error;
             }
