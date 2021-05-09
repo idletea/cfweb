@@ -16,7 +16,7 @@ export type Method =
 // Create a bound handler to indicate which methods are allowed for
 // either 204 responses to an OPTIONS request, or a 405 response.
 function allowedMethodsHandler(status: 204 | 405, methods: Method[]): BoundRouteHandler {
-    const allowed = methods.join(", ");
+    const allowed = Array.from(new Set(methods.concat("HEAD"))).join(", ");
     return () => new Response(null, {
         status: status,
         headers: new Headers({"allow": allowed}),
