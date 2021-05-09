@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "../build/test",
+        "target": "esnext",
+        "module": "Commonjs",
+        "sourceMap": true,
+        "lib": [
+            "esnext",
+            "webworker"
+        ],
+        "esModuleInterop": true
+    },
+    "include": [
+        "./*.ts",
+        "../node_modules/@cloudflare/workers-types/index.d.ts"
+    ]
+}
