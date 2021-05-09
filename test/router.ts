@@ -27,6 +27,16 @@ const makeGroupAssertHandler =
 
 const ROUTER = new Router([
     {
+        paths: [/^\/doubled\/$/],
+        methods: ["PUT"],
+        handler: makeTaggedHandler("/doubled1"),
+    },
+    {
+        paths: [/^\/doubled\/$/],
+        methods: ["PUT"],
+        handler: makeTaggedHandler("/doubled2"),
+    },
+    {
         paths: [/^\/options\/$/],
         methods: ["OPTIONS"],
         handler: makeTaggedHandler("/options/"),
@@ -149,4 +159,10 @@ test("should not see HEAD twice in allow for explict HEAD handler", async () => 
     const ev = makeFetchEvent("OPTIONS", "http://example.com/head/");
     const response = await (await ROUTER.getHandler(ev))();
     assert.equal(response.headers.get("allow"), "HEAD, PATCH");
+});
+
+test("should route the first match in the routing table", async () => {
+    const ev = makeFetchEvent("PUT", "http://example.com/doubled/");
+    const response = await (await ROUTER.getHandler(ev))();
+    assert.equal(response.headers.get("x-tag"), "/doubled1");
 });
