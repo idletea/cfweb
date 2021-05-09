@@ -1,0 +1,15 @@
+image: alpine/latest
+sources:
+  - https://github.com/oefd/cfweb
+packages:
+  - npm
+tasks:
+  - install: |
+      cd cfweb
+      npm install --quiet --no-progress
+  - build: |
+      cd cfweb
+      npm run build
+  - test: |
+      cd cfweb
+      npm run test:run
